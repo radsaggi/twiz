@@ -1,0 +1,10 @@
+name: radsaggi_apps_workspace
+description: A Melos workspace for radsaggi apps.
+publish_to: 'none'
+
+environment:
+  sdk: ^3.0.0
+
+dev_dependencies:
+  melos: ^6.2.0
+

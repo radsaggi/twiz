@@ -1,0 +1,65 @@
+name: radsaggi_apps_workspace
+
+packages:
+  - buzz
+  - twiz
+
+commands:
+    bootstrap:
+    # Use PubGrub for advanced dependency resolution
+    usePubspecOverrides: true
+    runPubGetInParallel: false
+
+scripts:
+
+  clean:
+    description: Clean all packages.
+    run: flutter clean
+
+  get:all: >
+    melos exec -- flutter pub get
+
+  upgrade:all: >
+    melos exec -- flutter pub upgrade
+
+  format: >
+    melos exec --fail-fast --concurrency=4 --
+      dart format . --set-exit-if-changed
+
+  generate:all: >
+    melos exec --order-dependents --fail-fast
+      --depends-on="build_runner" --
+      dart run build_runner build --delete-conflicting-outputs
+
+  build:web:
+    description: Build web version for all apps.
+    run: |
+      melos exec -- \
+        "flutter build web --release --no-wasm-dry-run --base-href \"/\$MELOS_PACKAGE_NAME/\""    
+
+  build-deploy:
+    description: Build all apps and prepare deployment artifacts in the deploy/ submodule.
+    run: |
+      melos run clean
+      melos run build:web
+      cp index.html deploy/
+      mkdir -p deploy/twiz deploy/buzz
+      cp -r twiz/build/web/* deploy/twiz/
+      cp -r buzz/build/web/* deploy/buzz/
+      echo "Build complete. Run 'melos run publish' to publish."
+      
+
+  publish:
+    description: Publish the deployment artifacts to the deploy/ submodule.
+    run: |
+      melos run build-deploy
+      (
+        cd deploy
+        git add .
+        if git commit -m "Published version update on $(date +'%Y-%m-%d %H:%M:%S')"; then
+            git push origin main;
+            echo "Commited changes, pushed to repository..."
+        else
+            echo "No changes to commit."
+        fi
+      )
