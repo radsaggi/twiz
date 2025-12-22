@@ -36,8 +36,11 @@ class _CategoriesState extends ChangeNotifier {
   }
 }
 
-class CategoriesDisplayWidget2 extends StatelessWidget  with TeamOptionsPopopWidgetProvider {
+class CategoriesDisplayWidget2 extends StatelessWidget
+    with TeamOptionsPopopWidgetProvider {
   static const route = "/categories";
+
+  const CategoriesDisplayWidget2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +64,9 @@ class CategoriesDisplayWidget2 extends StatelessWidget  with TeamOptionsPopopWid
         actions: [
           IconButton.filledTonal(
             onPressed: () => showDialog<String>(
-                context: context,
-                builder: (context) => provideUsing(
-                    context, scoreboardState, displayCharacterstics),
+              context: context,
+              builder: (context) =>
+                  provideUsing(context, scoreboardState, displayCharacterstics),
             ),
             icon: Icon(Icons.settings),
             iconSize: displayCharacterstics.iconSize,
@@ -81,7 +84,7 @@ class CategoriesDisplayWidget2 extends StatelessWidget  with TeamOptionsPopopWid
 }
 
 class _DataLoaderIcon extends StatefulWidget {
-  const _DataLoaderIcon({super.key});
+  const _DataLoaderIcon();
 
   @override
   State<_DataLoaderIcon> createState() => _DataLoaderIconState();
@@ -111,10 +114,8 @@ class _DataLoaderIconState extends State<_DataLoaderIcon> {
               context,
               child: Icon(Icons.upload),
               onPressed: () => setState(() {
-                this.dataFuture = globalData
-                    .uploadJson()
-                    .then((_) =>
-                        Future.delayed(Duration(milliseconds: 1000), () {}));
+                this.dataFuture = globalData.uploadJson().then(
+                    (_) => Future.delayed(Duration(milliseconds: 1000), () {}));
               }),
             );
           } else {
@@ -144,7 +145,7 @@ class _DataLoaderIconState extends State<_DataLoaderIcon> {
 typedef OnPressedHandler = void Function();
 
 class _CategoriesBoard extends StatelessWidget {
-  _CategoriesBoard({Key? super.key});
+  const _CategoriesBoard();
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +180,6 @@ class _AnimatedCategoriesWidget extends StatelessWidget {
 
   const _AnimatedCategoriesWidget({
     required this.index,
-    super.key,
   });
 
   @override
@@ -193,9 +193,9 @@ class _AnimatedCategoriesWidget extends StatelessWidget {
       transitionBuilder: (widget, animation) =>
           __transitionBuilder(widget, animation, childKey),
       layoutBuilder: (widget, list) => Stack(children: [widget!, ...list]),
-      child: _CategoryWidget(index: index, status: status, key: childKey),
       switchInCurve: Curves.easeInBack,
       switchOutCurve: Curves.easeInBack.flipped,
+      child: _CategoryWidget(index: index, status: status, key: childKey),
     );
   }
 }
@@ -213,8 +213,8 @@ Widget __transitionBuilder(
       final value = isUnder ? min(rotateAnim.value, pi / 2) : rotateAnim.value;
       return Transform(
         transform: Matrix4.rotationY(value)..setEntry(3, 0, tilt),
-        child: widget,
         alignment: Alignment.center,
+        child: widget,
       );
     },
   );
@@ -235,58 +235,135 @@ class _CategoryWidget extends StatelessWidget {
         hidden: status == CategoryStatus.HIDDEN);
 
     final textTheme = Theme.of(context).textTheme;
-    final buttonIcon = switch (this.status) {
-      CategoryStatus.HIDDEN => Icons.visibility_outlined,
-      CategoryStatus.REVEALED => Icons.navigate_next,
-      CategoryStatus.EXHAUSTED => Icons.done,
-    };
-    final buttonTextColor = switch (this.status) {
-      CategoryStatus.HIDDEN => Colors.grey[800]!,
-      CategoryStatus.REVEALED => Colors.black,
-      CategoryStatus.EXHAUSTED => Colors.grey[600]!,
-    };
     final displayCharacterstics = context.read<DisplayCharacterstics>();
     final size = displayCharacterstics.fullPadding
         .deflateSize(displayCharacterstics.scaleSize(this.formattedSize));
 
+    final mainColor = categoriesData.getColorForStatus(this.index, this.status);
+
+    final borderColor =
+        status == CategoryStatus.EXHAUSTED ? Colors.grey : Colors.black;
+
     return Container(
       margin: displayCharacterstics.fullPadding,
-      padding: displayCharacterstics.fullPadding / 2,
       width: size.width,
       height: size.height,
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
-        color: categoriesData.getColorForStatus(this.index, this.status),
+        color: borderColor, // Border color
         shadows: kElevationToShadow[6],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Spacer(flex: 16),
-          Text(titleString,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: textTheme.displayMedium
-                  ?.apply(color: buttonTextColor, fontWeightDelta: 3),
-              textScaler: displayCharacterstics.textScaler,
-              textAlign: TextAlign.center),
-          const Spacer(flex: 16),
-          IconButton.filled(
-            icon: Icon(buttonIcon),
-            iconSize: displayCharacterstics.iconSize,
-            style: FilledButton.styleFrom(
-                backgroundColor: buttonTextColor,
-                padding: displayCharacterstics.fullPadding / 1.5),
-            onPressed: status == CategoryStatus.EXHAUSTED
-                ? null
-                : () => _onPressed(context),
-          ),
-          const Spacer(flex: 5),
-        ],
+      padding: EdgeInsets.all(4.0), // Border width
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: _buildContent(context, displayCharacterstics, mainColor,
+            textTheme, titleString),
       ),
     );
+  }
+
+  Widget _buildContent(
+      BuildContext context,
+      DisplayCharacterstics displayCharacterstics,
+      Color mainColor,
+      TextTheme textTheme,
+      String titleString) {
+    if (status == CategoryStatus.HIDDEN) {
+      return Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  color: mainColor,
+                  padding: displayCharacterstics.fullPadding / 2,
+                  alignment: Alignment.center,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Material(
+                  color: const Color(0xFF222222),
+                  child: InkWell(
+                    onTap: () => _onPressed(context),
+                    child: Center(
+                      child: Icon(
+                        Icons.visibility_outlined,
+                        color: Colors.white,
+                        size: displayCharacterstics.iconSize * 1.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Align(
+            alignment: Alignment(0, -0.5), // Adjust vertical alignment to visually center in the top 60%
+            child: Padding(
+              padding: displayCharacterstics.fullPadding,
+              child: Text(titleString,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.displayMedium
+                      ?.apply(color: Colors.black, fontWeightDelta: 3),
+                  textScaler: displayCharacterstics.textScaler,
+                  textAlign: TextAlign.center),
+            ),
+          ),
+        ],
+      );
+    } else {
+      // REVEALED or EXHAUSTED
+      final textColor =
+          status == CategoryStatus.REVEALED ? Colors.black : Colors.grey;
+      final buttonIcon =
+          status == CategoryStatus.REVEALED ? Icons.navigate_next : Icons.done;
+      return Container(
+        color: mainColor,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment(0, -0.5), // Matches the alignment of HIDDEN state
+              child: Padding(
+                padding: displayCharacterstics.fullPadding,
+                child: Text(titleString,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.displayMedium
+                        ?.apply(color: textColor, fontWeightDelta: 3),
+                    textScaler: displayCharacterstics.textScaler,
+                    textAlign: TextAlign.center),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: displayCharacterstics.fullPadding,
+                child: IconButton.filled(
+                  onPressed: status == CategoryStatus.REVEALED
+                      ? () => _onPressed(context)
+                      : null,
+                  icon: Icon(
+                    buttonIcon,
+                    color: Colors.white,
+                  ),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    disabledBackgroundColor: Colors.grey[500],
+                    disabledForegroundColor: Colors.grey,
+                  ),
+                  iconSize: displayCharacterstics.iconSize,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void _onPressed(BuildContext context) {

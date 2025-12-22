@@ -21,7 +21,8 @@ class ScoreBoardFullWidget extends StatelessWidget {
         runAlignment: WrapAlignment.center,
         spacing: displayCharacterstics.paddingRaw * 2,
         runSpacing: displayCharacterstics.paddingRaw * 2,
-        children: List.generate(ScoreboardLength, (idx) => _buildScoreCounter(context, idx)),
+        children: List.generate(
+            ScoreboardLength, (idx) => _buildScoreCounter(context, idx)),
       ),
     );
   }
@@ -76,10 +77,8 @@ class _ScoreCounterSizes {
   final double scale;
   final Axis direction;
 
-  double get height =>
-      scale * (direction == Axis.horizontal ? 100.0 : 250.0);
-  double get width =>
-      scale * (direction == Axis.horizontal ? 250.0 : 100.0);
+  double get height => scale * (direction == Axis.horizontal ? 100.0 : 250.0);
+  double get width => scale * (direction == Axis.horizontal ? 250.0 : 100.0);
   Size get size => Size(width, height);
 
   double get tweenEndOffset => scale * 2.5;

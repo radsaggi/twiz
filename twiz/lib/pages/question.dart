@@ -37,7 +37,8 @@ class QuestionState extends ChangeNotifier {
   }
 }
 
-class QuestionDisplayWidget extends StatelessWidget with TeamOptionsPopopWidgetProvider {
+class QuestionDisplayWidget extends StatelessWidget
+    with TeamOptionsPopopWidgetProvider {
   static const route = "/question";
 
   const QuestionDisplayWidget();
@@ -84,9 +85,9 @@ class QuestionDisplayWidget extends StatelessWidget with TeamOptionsPopopWidgetP
         actions: [
           IconButton.filledTonal(
             onPressed: () => showDialog<String>(
-                context: context,
-                builder: (context) => provideUsing(
-                    context, scoreboardState, displayCharacterstics),
+              context: context,
+              builder: (context) =>
+                  provideUsing(context, scoreboardState, displayCharacterstics),
             ),
             icon: Icon(Icons.settings),
             iconSize: displayCharacterstics.iconSize,

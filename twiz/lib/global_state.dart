@@ -71,13 +71,13 @@ class GlobalData extends ChangeNotifier {
 
   Future<void> uploadJson() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ["json"],
+      type: FileType.custom,
+      allowedExtensions: ["json"],
     );
     if (result == null) {
       return;
     }
-    
+
     final fileContents = utf8.decode(await result.files.first.bytes!);
     final jsonData = await json.decode(fileContents);
     categories = CategoriesData.fromJson(jsonData);
@@ -157,7 +157,7 @@ class CategoriesData {
   Color getColorForStatus(int index, CategoryStatus status) {
     final materialColor = _CATEGORY_COLORS[index % getMaxRowCount()];
     return switch (status) {
-      CategoryStatus.HIDDEN => materialColor[200]!,
+      CategoryStatus.HIDDEN => materialColor[400]!,
       CategoryStatus.REVEALED => materialColor[400]!,
       CategoryStatus.EXHAUSTED => Colors.grey[400]!,
     };
