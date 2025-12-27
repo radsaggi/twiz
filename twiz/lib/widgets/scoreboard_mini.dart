@@ -51,7 +51,7 @@ class ScoreBoardMiniWidget extends StatelessWidget {
     return Container(
       decoration: ShapeDecoration(
         shape: const CircleBorder(),
-        color: scoreboardTeamColorScheme.primary,
+        color: scoreboardTeamColorScheme.secondary,
       ),
       alignment: Alignment.center,
       constraints: BoxConstraints(

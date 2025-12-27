@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../display.dart';
 import '../global_state.dart';
 import '../widgets/scoreboard_mini.dart';
-import '../widgets/team_options.dart';
+import 'team_options.dart';
 
 enum QuestionDisplayState {
   EMPTY,
@@ -37,8 +37,7 @@ class QuestionState extends ChangeNotifier {
   }
 }
 
-class QuestionDisplayWidget extends StatelessWidget
-    with TeamOptionsPopopWidgetProvider {
+class QuestionDisplayWidget extends StatelessWidget {
   static const route = "/question";
 
   const QuestionDisplayWidget();
@@ -63,7 +62,6 @@ class QuestionDisplayWidget extends StatelessWidget
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     final displayCharacterstics = context.read<DisplayCharacterstics>();
-    final scoreboardState = context.watch<GlobalScoreboard>();
     return Scaffold(
       appBar: AppBar(
         title: Text(questionData.title,
@@ -84,11 +82,8 @@ class QuestionDisplayWidget extends StatelessWidget
         leadingWidth: displayCharacterstics.paddingRaw * 3,
         actions: [
           IconButton.filledTonal(
-            onPressed: () => showDialog<String>(
-              context: context,
-              builder: (context) =>
-                  provideUsing(context, scoreboardState, displayCharacterstics),
-            ),
+            onPressed: () =>
+                Navigator.pushNamed(context, TeamOptionsPage.route),
             icon: Icon(Icons.settings),
             iconSize: displayCharacterstics.iconSize,
             padding: displayCharacterstics.fullPadding / 2,

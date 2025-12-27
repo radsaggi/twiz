@@ -15,16 +15,20 @@ final CLUE_COLORS = [
   Color(0xFF4C9BBA),
   Color(0xFF007256),
   Color(0xFFA70043),
-].map(_deriveColorScheme).toList(growable: false);
+].map(deriveColorScheme).toList(growable: false);
 
-ColorScheme _deriveColorScheme(Color color) {
+ColorScheme deriveColorScheme(Color color) {
   return ColorScheme.fromSeed(
-      seedColor: color, dynamicSchemeVariant: DynamicSchemeVariant.vibrant);
+      seedColor: color,
+      dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
+      secondary: color);
 }
 
 class GlobalScoreboard extends ChangeNotifier {
   final _colors = List.generate(
-      ScoreboardLength, (idx) => _deriveColorScheme(_defaultColors[idx]));
+      ScoreboardLength, (idx) => deriveColorScheme(_defaultColors[idx]));
+  final _seedColors =
+      List.generate(ScoreboardLength, (idx) => _defaultColors[idx]);
   final _names = List.generate(
       ScoreboardLength, (idx) => "This is a long team name ${idx + 1}");
   var _scores = List.filled(ScoreboardLength, /* value = */ 0);
@@ -32,10 +36,9 @@ class GlobalScoreboard extends ChangeNotifier {
   static const List<Color> _defaultColors = [
     Colors.red,
     Colors.purple,
-    Colors.blue,
+    Colors.grey,
     Colors.green,
-    // Colors.yellow,
-    Color(0xFFF0B03F),
+    Colors.brown,
   ];
 
   void updateScore(int index, int newScore) {
@@ -51,12 +54,17 @@ class GlobalScoreboard extends ChangeNotifier {
     return this._colors[index];
   }
 
+  Color getTeamColor(int index) {
+    return this._seedColors[index];
+  }
+
   String getTeamName(int index) {
     return this._names[index];
   }
 
   void updateColor(Color newColor, int index) {
-    this._colors[index] = _deriveColorScheme(newColor);
+    this._seedColors[index] = newColor;
+    this._colors[index] = deriveColorScheme(newColor);
     notifyListeners();
   }
 

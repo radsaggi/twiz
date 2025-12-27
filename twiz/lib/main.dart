@@ -4,6 +4,7 @@ import 'package:twiz/global_state.dart';
 
 import 'pages/question.dart';
 import 'pages/categories2.dart';
+import 'pages/team_options.dart';
 
 void main() {
   runApp(const GameApp());
@@ -34,6 +35,7 @@ class GameApp extends StatelessWidget {
                       globalData.categories,
                   child: CategoriesDisplayWidget2()),
           QuestionDisplayWidget.route: (context) => QuestionDisplayWidget(),
+          TeamOptionsPage.route: (context) => const TeamOptionsPage(),
         },
         initialRoute: CategoriesDisplayWidget2.route,
       ),

@@ -6,6 +6,7 @@ This directory contains the main screens (pages) of the application.
 
 - `categories2.dart`: The main dashboard displaying game categories.
 - `question.dart`: The detail screen for a specific question and its clues.
+- `team_options.dart`: Configuration screen for team names and colors.
 
 ## Components
 
@@ -35,6 +36,17 @@ This directory contains the main screens (pages) of the application.
     - **Clue Interaction**:
         - `ClueAnswerButtonWidget`: A button that reveals the answer when clicked (`_buildAnswerOverlay`).
         - `ClueTextWidget`: Displays the hint text, animating between hints based on `QuestionState`.
+
+### 3. Team Options Page (`team_options.dart`)
+- **Widget**: `TeamOptionsPage`
+- **Route**: `/teams`
+- **Functionality**:
+    - Full-screen configuration page for editing team names and colors.
+    - Uses standard `AppBar` for consistent navigation and actions.
+    - **Edit Mode**:
+        - Click name to edit text inline.
+        - Click "Change Colour" to open a `_ColorPickerPopup` dialog.
+- **State**: Uses local state to buffer changes, committing to `GlobalScoreboard` only on "Save & Exit".
 
 ## Design Decisions
 

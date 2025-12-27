@@ -4,8 +4,8 @@ This directory contains the core logic and UI components for the Twiz Flutter ap
 
 ## Directory Layout
 
-- `pages/`: Contains the main screens of the application (Categories, Question).
-- `widgets/`: Contains reusable UI components (Scoreboard, Team Options).
+- `pages/`: Contains the main screens of the application (Categories, Question, Teams).
+- `widgets/`: Contains reusable UI components (Scoreboard).
 - `display.dart`: Handles responsive UI scaling and layout configuration.
 - `global_state.dart`: Defines global application state and data models.
 - `main.dart`: Application entry point and dependency injection setup.

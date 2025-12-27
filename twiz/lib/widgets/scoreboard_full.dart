@@ -132,7 +132,7 @@ class _ScoreCounterState extends State<_ScoreCounter>
       decoration: ShapeDecoration(
         shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(100))),
-        color: colorScheme.primary,
+        color: colorScheme.secondary,
       ),
       padding: _sizes.containerPadding,
       child: Column(
@@ -159,7 +159,7 @@ class _ScoreCounterState extends State<_ScoreCounter>
                   clipBehavior: Clip.antiAlias,
                   decoration: ShapeDecoration(
                     shape: StadiumBorder(),
-                    color: colorScheme.tertiaryContainer,
+                    color: colorScheme.primaryFixedDim,
                   ),
                   margin: _sizes.controllerMargin,
                   child: Flex(
@@ -171,7 +171,7 @@ class _ScoreCounterState extends State<_ScoreCounter>
                       IconButton(
                         icon: Icon(Icons.remove),
                         iconSize: _sizes.iconSize,
-                        color: colorScheme.onPrimaryContainer,
+                        color: colorScheme.onPrimary,
                         padding: _sizes.iconPadding,
                         onPressed: () {
                           setState(() {
@@ -184,7 +184,7 @@ class _ScoreCounterState extends State<_ScoreCounter>
                       IconButton(
                         icon: Icon(Icons.add),
                         iconSize: _sizes.iconSize,
-                        color: colorScheme.onPrimaryContainer,
+                        color: colorScheme.onPrimary,
                         padding: _sizes.iconPadding,
                         onPressed: () {
                           setState(() {
@@ -199,7 +199,7 @@ class _ScoreCounterState extends State<_ScoreCounter>
                 ),
                 Material(
                   clipBehavior: Clip.antiAlias,
-                  color: colorScheme.primaryContainer,
+                  color: colorScheme.primary,
                   shape: const CircleBorder(),
                   elevation: 10.0,
                   child: Center(
@@ -223,7 +223,7 @@ class _ScoreCounterState extends State<_ScoreCounter>
                         '$_value',
                         key: ValueKey(_value),
                         style: textTheme.headlineLarge!.copyWith(
-                            color: colorScheme.onPrimaryContainer,
+                            color: colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
                             fontSize: textTheme.headlineLarge!.fontSize! *
                                 _sizes.scale),

@@ -7,7 +7,7 @@ import 'package:twiz/global_state.dart';
 import '../display.dart';
 import 'question.dart';
 import '../widgets/scoreboard_mini.dart';
-import '../widgets/team_options.dart';
+import 'team_options.dart';
 
 class _CategoriesState extends ChangeNotifier {
   _CategoriesState({required int count})
@@ -36,8 +36,7 @@ class _CategoriesState extends ChangeNotifier {
   }
 }
 
-class CategoriesDisplayWidget2 extends StatelessWidget
-    with TeamOptionsPopopWidgetProvider {
+class CategoriesDisplayWidget2 extends StatelessWidget {
   static const route = "/categories";
 
   const CategoriesDisplayWidget2({super.key});
@@ -54,7 +53,6 @@ class CategoriesDisplayWidget2 extends StatelessWidget
 
   Widget _buildSubtree(BuildContext context, _child) {
     final displayCharacterstics = context.read<DisplayCharacterstics>();
-    final scoreboardState = context.watch<GlobalScoreboard>();
 
     return Scaffold(
       appBar: AppBar(
@@ -63,11 +61,8 @@ class CategoriesDisplayWidget2 extends StatelessWidget
         elevation: 4,
         actions: [
           IconButton.filledTonal(
-            onPressed: () => showDialog<String>(
-              context: context,
-              builder: (context) =>
-                  provideUsing(context, scoreboardState, displayCharacterstics),
-            ),
+            onPressed: () =>
+                Navigator.pushNamed(context, TeamOptionsPage.route),
             icon: Icon(Icons.settings),
             iconSize: displayCharacterstics.iconSize,
             padding: displayCharacterstics.fullPadding / 2,
@@ -224,9 +219,11 @@ class _CategoryWidget extends StatelessWidget {
   final int index;
   final CategoryStatus status;
 
-  final Size formattedSize = Size(250, 300);
+  static const formattedSize = Size(250, 300);
+  static const textAlignment = Alignment(0, -0.5);
 
-  _CategoryWidget({required this.index, required this.status, Key? super.key});
+  const _CategoryWidget(
+      {required this.index, required this.status, Key? super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +234,7 @@ class _CategoryWidget extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final displayCharacterstics = context.read<DisplayCharacterstics>();
     final size = displayCharacterstics.fullPadding
-        .deflateSize(displayCharacterstics.scaleSize(this.formattedSize));
+        .deflateSize(displayCharacterstics.scaleSize(formattedSize));
 
     final mainColor = categoriesData.getColorForStatus(this.index, this.status);
 
@@ -257,8 +254,8 @@ class _CategoryWidget extends StatelessWidget {
       padding: EdgeInsets.all(4.0), // Border width
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        child: _buildContent(context, displayCharacterstics, mainColor,
-            textTheme, titleString),
+        child: _buildContent(
+            context, displayCharacterstics, mainColor, textTheme, titleString),
       ),
     );
   }
@@ -302,7 +299,7 @@ class _CategoryWidget extends StatelessWidget {
             ],
           ),
           Align(
-            alignment: Alignment(0, -0.5), // Adjust vertical alignment to visually center in the top 60%
+            alignment: textAlignment,
             child: Padding(
               padding: displayCharacterstics.fullPadding,
               child: Text(titleString,
@@ -327,7 +324,7 @@ class _CategoryWidget extends StatelessWidget {
         child: Stack(
           children: [
             Align(
-              alignment: Alignment(0, -0.5), // Matches the alignment of HIDDEN state
+              alignment: textAlignment,
               child: Padding(
                 padding: displayCharacterstics.fullPadding,
                 child: Text(titleString,
