@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../display.dart';
 import '../global_state.dart';
+import '../widgets/power_dial.dart';
 
 class TeamOptionsPage extends StatelessWidget {
   static const route = "/teams";
@@ -83,10 +84,10 @@ class _TeamOptionsContentState extends State<_TeamOptionsContent> {
 
     // Background: Solid, very light grey (#F4F6F8)
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F8),
+      backgroundColor: colorScheme.surfaceContainer,
       appBar: AppBar(
         title: Text(
-          'Settings',
+          'Teams',
           textScaler: displayCharacterstics.compundedTextScaler(scale: 1.1),
         ),
         titleTextStyle: theme.textTheme.displaySmall!.copyWith(
@@ -104,22 +105,6 @@ class _TeamOptionsContentState extends State<_TeamOptionsContent> {
         ),
         leadingWidth: displayCharacterstics.paddingRaw * 3,
         actions: [
-          // Add/Remove Teams
-          IconButton.filledTonal(
-            onPressed: scoreboard.teamCount < MAX_TEAMS
-                ? () => _addTeam(context)
-                : null,
-            icon: Icon(Icons.add),
-            tooltip: "Add Team",
-          ),
-          displayCharacterstics.halfSpacer,
-          IconButton.filledTonal(
-            onPressed: scoreboard.teamCount > 1
-                ? () => _removeTeam(context)
-                : null,
-            icon: Icon(Icons.remove),
-            tooltip: "Remove Team",
-          ),
           displayCharacterstics.fullSpacer,
           ElevatedButton(
             onPressed: _saveAndExit,
@@ -131,12 +116,45 @@ class _TeamOptionsContentState extends State<_TeamOptionsContent> {
               ),
               padding: displayCharacterstics.fullPadding,
             ),
-            child: const Text('Save & Exit'),
+            child: Text(
+              'Save & Exit',
+              textScaler: displayCharacterstics.compundedTextScaler(scale: 1.6),
+            ),
           ),
           displayCharacterstics.fullSpacer,
         ],
       ),
-      body: Column(children: [Expanded(child: _buildGrid())]),
+      body: Column(
+        children: [
+          _buildHeader(scoreboard, displayCharacterstics, theme),
+          Expanded(child: _buildGrid()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+    GlobalScoreboard scoreboard,
+    DisplayCharacterstics displayCharacterstics,
+    ThemeData theme,
+  ) {
+    return Padding(
+      padding: displayCharacterstics.fullPadding.copyWith(
+        bottom: displayCharacterstics.paddingRaw / 2,
+      ),
+      child: Center(
+        child: PowerDial(
+          value: scoreboard.teamCount,
+          min: 2,
+          max: MAX_TEAMS,
+          onIncrement: scoreboard.teamCount < MAX_TEAMS
+              ? () => _addTeam(context)
+              : null,
+          onDecrement: scoreboard.teamCount > 2
+              ? () => _removeTeam(context)
+              : null,
+        ),
+      ),
     );
   }
 
@@ -148,14 +166,23 @@ class _TeamOptionsContentState extends State<_TeamOptionsContent> {
           children: [
             Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Wrap(
-                spacing: 24,
-                runSpacing: 24,
-                alignment: WrapAlignment.center,
-                children: [
-                  for (int i = 0; i < _tempTeams.length; i++)
-                    _buildCardWrapper(i),
-                ],
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // Attempt to fit 4 items.
+                  // Total width needed = 4 * cardWidth + 3 * spacing
+                  // If we want 4 columns, we might need to scale down if width is insufficient
+                  // Or just use Wrap which is already there.
+                  // We'll stick to Wrap but maybe check if we can maximize width usage.
+                  return Wrap(
+                    spacing: 24,
+                    runSpacing: 24,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      for (int i = 0; i < _tempTeams.length; i++)
+                        _buildCardWrapper(i),
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -267,10 +294,11 @@ class _TeamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayCharacterstics = context.read<DisplayCharacterstics>();
     // Dimensions: 300px width x 180px height
     return SizedBox(
-      width: 300,
-      height: 180,
+      width: 300 * displayCharacterstics.aspectRatioScale,
+      height: 180 * displayCharacterstics.aspectRatioScale,
       child: Container(
         decoration: BoxDecoration(
           color: data.colorScheme.secondary,

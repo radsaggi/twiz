@@ -1,87 +1,86 @@
 {
   "History": [
     {
-      "answer": "George Washington",
+      "answer": "GW",
       "clues": [
-        "I was born in Virginia in 1732.",
-        "I served as a general in the Continental Army.",
-        "I presided over the Constitutional Convention.",
-        "I was the first President of the United States.",
-        "My face is on the one-dollar bill."
+        "Born 1732.",
+        "General.",
+        "Convention.",
+        "First Prez.",
+        "$1 Bill."
       ]
     },
     {
-      "answer": "Cleopatra",
+      "answer": "Cleopatra VII Philopator",
       "clues": [
-        "I was a ruler of ancient Egypt.",
-        "I was a member of the Ptolemaic dynasty.",
-        "I had relationships with Julius Caesar and Mark Antony.",
-        "I supposedly died from the bite of an asp.",
-        "I was the last active ruler of the Ptolemaic Kingdom of Egypt."
+        "Ruler of Egypt.",
+        "Ptolemaic dynasty member.",
+        "Had complex political and romantic alliances with Julius Caesar and Mark Antony to protect her kingdom.",
+        "According to popular belief, she committed suicide by allowing an asp (Egyptian cobra) to bite her.",
+        "Last active ruler of the Ptolemaic Kingdom of Egypt, effectively ending the Hellenistic period."
       ]
     },
     {
-      "answer": "World War II",
+      "answer": "WW2",
       "clues": [
-        "It was a global conflict that lasted from 1939 to 1945.",
-        "It involved the vast majority of the world's countries.",
-        "The two opposing alliances were the Allies and the Axis.",
-        "It began with the invasion of Poland.",
-        "It ended with the surrender of Japan."
+        "1939-1945.",
+        "Global.",
+        "Allies vs Axis.",
+        "Poland invasion.",
+        "Japan surrender."
       ]
     },
     {
-      "answer": "Napoleon Bonaparte",
+      "answer": "Napoleon Bonaparte, Emperor of the French",
       "clues": [
-        "I was a French military and political leader.",
-        "I rose to prominence during the French Revolution.",
-        "I crowned myself Emperor of the French.",
-        "I was exiled to the island of Elba.",
-        "I met my final defeat at the Battle of Waterloo."
+        "French military leader.",
+        "Rose during Revolution.",
+        "Crowned himself Emperor of the French in a lavish ceremony at Notre Dame de Paris in 1804.",
+        "Exiled to Elba.",
+        "Defeated at Waterloo."
       ]
     }
   ],
   "Science": [
     {
-      "answer": "Photosynthesis",
+      "answer": "Photo",
       "clues": [
-        "It is a process used by plants.",
-        "It converts light energy into chemical energy.",
-        "It requires carbon dioxide and water.",
-        "It produces oxygen as a byproduct.",
-        "It typically takes place in chloroplasts."
+        "Plants use it.",
+        "Light to chemical.",
+        "Needs CO2 + H2O.",
+        "Makes O2.",
+        "Chloroplasts."
       ]
     },
     {
-      "answer": "Gravity",
+      "answer": "Universal Gravitation",
       "clues": [
-        "It is a fundamental interaction which causes mutual attraction between all things with mass or energy.",
-        "Isaac Newton is famous for his work on this.",
-        "It keeps planets in orbit around the sun.",
-        "It is responsible for the tides.",
-        "It gives weight to physical objects."
+        "Attraction.",
+        "Newton's work described this fundamental force that governs the motion of celestial bodies and objects on Earth.",
+        "Orbit keeper.",
+        "Tides.",
+        "Gives weight."
       ]
     },
     {
-      "answer": "DNA",
+      "answer": "Deoxyribonucleic Acid",
       "clues": [
-        "It carries genetic instructions.",
-        "It stands for Deoxyribonucleic acid.",
-        "It has a double helix structure.",
-        "It was discovered by Watson and Crick.",
-        "It is found in the nucleus of cells."
+        "Genetic instructions.",
+        "DNA.",
+        "Double helix structure discovered by Watson and Crick, revolutionizing our understanding of genetics.",
+        "Watson & Crick.",
+        "In nucleus."
       ]
     },
     {
-      "answer": "The Sun",
+      "answer": "Sol",
       "clues": [
-        "It is the star at the center of the Solar System.",
-        "It is a nearly perfect sphere of hot plasma.",
-        "It accounts for about 99.86% of the total mass of the Solar System.",
-        "Its energy is produced by nuclear fusion.",
-        "Light from it takes about 8 minutes to reach Earth."
+        "Star.",
+        "Plasma sphere.",
+        "99.86% mass.",
+        "Fusion power.",
+        "8 min light."
       ]
     }
   ]
 }
-

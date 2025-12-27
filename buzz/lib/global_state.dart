@@ -11,6 +11,15 @@ part 'global_state.g.dart';
 const int MAX_TEAMS = 8;
 const int DEFAULT_TEAMS = 4;
 
+const List<Color> DEFAULT_CATEGORY_COLORS = [
+  Colors.red,
+  Colors.yellow,
+  Colors.purple,
+  Colors.indigo,
+  Colors.green,
+  Colors.brown,
+];
+
 final List<Color> _DEFAULT_TEAM_COLORS = [
   Colors.red,
   Colors.blue,
@@ -208,14 +217,18 @@ class QuestionData {
   const QuestionData(this.answer, this.clues);
 
   QuestionData.sample(int idx)
-    : answer = "Answer $idx",
-      clues = [
-        "Clue 1 for Q$idx",
-        "Clue 2 for Q$idx",
-        "Clue 3 for Q$idx",
-        "Clue 4 for Q$idx",
-        "Clue 5 for Q$idx",
-      ];
+    : answer = idx.isEven
+          ? "Ans $idx"
+          : "A very long answer for question $idx to test text wrapping behavior in the UI",
+      clues = idx.isEven
+          ? ["Short 1", "Short 2", "Short 3", "Short 4", "Short 5"]
+          : [
+              "This is a long clue for question $idx to test multiple lines.",
+              "Another very long clue to ensure text wraps correctly in the display.",
+              "A third long clue for consistency and testing purposes.",
+              "Yet another long clue to push the limits of the text field.",
+              "The final long clue for this question sample.",
+            ];
 
   final String answer;
   final List<String> clues;

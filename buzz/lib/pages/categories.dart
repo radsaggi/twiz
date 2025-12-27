@@ -15,8 +15,8 @@ class CategoriesDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DisplayCharacterstics.wrapped(
-            childBuilder: (context, _) => _buildSubtree(context))
-        .call(context, null);
+      childBuilder: (context, _) => _buildSubtree(context),
+    ).call(context, null);
   }
 
   Widget _buildSubtree(BuildContext context) {
@@ -24,16 +24,18 @@ class CategoriesDisplayWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: theme.colorScheme.surfaceContainer,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: displayCharacterstics.appBarHeight,
         elevation: 4,
-        title: Text("Categories",
-             textScaler: displayCharacterstics.compundedTextScaler(scale: 1.1),
-             style: theme.textTheme.displaySmall!.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: theme.colorScheme.primary,
-             ),
+        title: Text(
+          "Categories",
+          textScaler: displayCharacterstics.compundedTextScaler(scale: 1.1),
+          style: theme.textTheme.displaySmall!.copyWith(
+            fontWeight: FontWeight.w900,
+            color: theme.colorScheme.primary,
+          ),
         ),
         actions: [
           IconButton.filledTonal(
@@ -74,26 +76,30 @@ class _DataLoaderIconState extends State<_DataLoaderIcon> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: dataFuture,
-        builder: (context, snapshot) {
-          final globalData = context.watch<GlobalData>();
-          if (snapshot.hasError) {
-            print("Dataset loading Error: ${snapshot.error}");
-            return _buildIconButton(context, child: Icon(Icons.report));
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            return _buildIconButton(
-              context,
-              child: Icon(Icons.upload),
-              onPressed: () => setState(() {
-                this.dataFuture = globalData.uploadJson().then(
-                    (_) => Future.delayed(Duration(milliseconds: 1000), () {}));
-              }),
-            );
-          } else {
-            return _buildIconButton(context,
-                child: CircularProgressIndicator(strokeWidth: 6));
-          }
-        });
+      future: dataFuture,
+      builder: (context, snapshot) {
+        final globalData = context.watch<GlobalData>();
+        if (snapshot.hasError) {
+          print("Dataset loading Error: ${snapshot.error}");
+          return _buildIconButton(context, child: Icon(Icons.report));
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          return _buildIconButton(
+            context,
+            child: Icon(Icons.upload),
+            onPressed: () => setState(() {
+              this.dataFuture = globalData.uploadJson().then(
+                (_) => Future.delayed(Duration(milliseconds: 1000), () {}),
+              );
+            }),
+          );
+        } else {
+          return _buildIconButton(
+            context,
+            child: CircularProgressIndicator(strokeWidth: 6),
+          );
+        }
+      },
+    );
   }
 
   Widget _buildIconButton(
@@ -139,7 +145,7 @@ class _CategoriesGrid extends StatelessWidget {
 class _CategoryTile extends StatelessWidget {
   final int index;
   final CategoryItem item;
-  
+
   static const formattedSize = Size(250, 300);
   static const textAlignment = Alignment(0, -0.5);
 
@@ -149,86 +155,97 @@ class _CategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final displayCharacterstics = context.read<DisplayCharacterstics>();
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final status = item.status;
-    
-    // Assign colors cyclically or randomly if preferred
-    final color = Colors.primaries[index % Colors.primaries.length];
-    
+
     final isExhausted = status == CategoryStatus.EXHAUSTED;
-    
+
     final size = displayCharacterstics.scaleSize(formattedSize);
-    final borderColor = isExhausted ? Colors.grey : Colors.black;
-    final mainColor = isExhausted ? Colors.grey[300]! : color;
+
+    // Updated Colors based on ColorScheme
+    final derivedScheme = deriveColorScheme(
+      DEFAULT_CATEGORY_COLORS[index % DEFAULT_CATEGORY_COLORS.length],
+    );
+
+    final backgroundColor = isExhausted
+        ? colorScheme.surfaceContainerHighest
+        : derivedScheme.primary;
+
+    final textColor = isExhausted
+        ? colorScheme.onSurfaceVariant
+        : derivedScheme.onPrimary;
+
+    final pipsColor = isExhausted ? Colors.grey : derivedScheme.onPrimaryFixed;
 
     return Container(
       width: size.width,
       height: size.height,
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        color: borderColor,
-        shadows: kElevationToShadow[6],
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        color: backgroundColor,
+        shadows: kElevationToShadow[2],
       ),
-      padding: EdgeInsets.all(4.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        child: Container(
-          color: mainColor,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          onTap: isExhausted ? null : () => _onTap(context),
           child: Stack(
             children: [
               Align(
                 alignment: textAlignment,
                 child: Padding(
                   padding: displayCharacterstics.fullPadding,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        item.name,
-                        style: theme.textTheme.headlineMedium!.copyWith(
-                          color: isExhausted ? Colors.grey[600] : Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                        textScaler: displayCharacterstics.textScaler,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      if (!isExhausted)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                             item.getProgress(),
-                             style: theme.textTheme.titleMedium!.copyWith(
-                                 color: Colors.white70,
-                                 fontWeight: FontWeight.w500
-                             ),
-                             textScaler: displayCharacterstics.textScaler,
-                          ),
-                        )
-                    ],
+                  child: Text(
+                    item.name,
+                    style: theme.textTheme.displayMedium!
+                        .copyWith(color: textColor, fontWeight: FontWeight.w900)
+                        .apply(fontWeightDelta: 3),
+                    textAlign: TextAlign.center,
+                    textScaler: displayCharacterstics.textScaler,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: displayCharacterstics.fullPadding,
-                  child: IconButton.filled(
-                    onPressed: isExhausted ? null : () => _onTap(context),
-                    icon: Icon(
-                      isExhausted ? Icons.done : Icons.navigate_next,
-                      color: Colors.white,
+              if (!isExhausted)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: displayCharacterstics.fullPadding * 1.5,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(item.questions.length, (i) {
+                        final isOpened = i < item.currentQuestionIndex;
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 4.0),
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isOpened ? pipsColor : Colors.transparent,
+                            border: Border.all(color: pipsColor, width: 2),
+                          ),
+                        );
+                      }),
                     ),
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      disabledBackgroundColor: Colors.grey[500],
-                      disabledForegroundColor: Colors.grey,
-                    ),
-                    iconSize: displayCharacterstics.iconSize,
                   ),
                 ),
-              )
+              if (isExhausted)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: displayCharacterstics.fullPadding,
+                    child: Icon(
+                      Icons.done,
+                      color: colorScheme.primary,
+                      size: displayCharacterstics.iconSize,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -237,18 +254,17 @@ class _CategoryTile extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) async {
-     final globalData = context.read<GlobalData>();
-     final question = item.getCurrentQuestion();
-     
-     if (question != null) {
-        await Navigator.pushNamed(
-            context, 
-            QuestionDisplayWidget.route,
-            arguments: (item.name, question)
-        );
-        // Advance to next question after returning
-        globalData.advanceCategory(index);
-     }
+    final globalData = context.read<GlobalData>();
+    final question = item.getCurrentQuestion();
+
+    if (question != null) {
+      await Navigator.pushNamed(
+        context,
+        QuestionDisplayWidget.route,
+        arguments: (item.name, question),
+      );
+      // Advance to next question after returning
+      globalData.advanceCategory(index);
+    }
   }
 }
-
