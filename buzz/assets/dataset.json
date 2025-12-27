@@ -1,0 +1,87 @@
+{
+  "History": [
+    {
+      "answer": "George Washington",
+      "clues": [
+        "I was born in Virginia in 1732.",
+        "I served as a general in the Continental Army.",
+        "I presided over the Constitutional Convention.",
+        "I was the first President of the United States.",
+        "My face is on the one-dollar bill."
+      ]
+    },
+    {
+      "answer": "Cleopatra",
+      "clues": [
+        "I was a ruler of ancient Egypt.",
+        "I was a member of the Ptolemaic dynasty.",
+        "I had relationships with Julius Caesar and Mark Antony.",
+        "I supposedly died from the bite of an asp.",
+        "I was the last active ruler of the Ptolemaic Kingdom of Egypt."
+      ]
+    },
+    {
+      "answer": "World War II",
+      "clues": [
+        "It was a global conflict that lasted from 1939 to 1945.",
+        "It involved the vast majority of the world's countries.",
+        "The two opposing alliances were the Allies and the Axis.",
+        "It began with the invasion of Poland.",
+        "It ended with the surrender of Japan."
+      ]
+    },
+    {
+      "answer": "Napoleon Bonaparte",
+      "clues": [
+        "I was a French military and political leader.",
+        "I rose to prominence during the French Revolution.",
+        "I crowned myself Emperor of the French.",
+        "I was exiled to the island of Elba.",
+        "I met my final defeat at the Battle of Waterloo."
+      ]
+    }
+  ],
+  "Science": [
+    {
+      "answer": "Photosynthesis",
+      "clues": [
+        "It is a process used by plants.",
+        "It converts light energy into chemical energy.",
+        "It requires carbon dioxide and water.",
+        "It produces oxygen as a byproduct.",
+        "It typically takes place in chloroplasts."
+      ]
+    },
+    {
+      "answer": "Gravity",
+      "clues": [
+        "It is a fundamental interaction which causes mutual attraction between all things with mass or energy.",
+        "Isaac Newton is famous for his work on this.",
+        "It keeps planets in orbit around the sun.",
+        "It is responsible for the tides.",
+        "It gives weight to physical objects."
+      ]
+    },
+    {
+      "answer": "DNA",
+      "clues": [
+        "It carries genetic instructions.",
+        "It stands for Deoxyribonucleic acid.",
+        "It has a double helix structure.",
+        "It was discovered by Watson and Crick.",
+        "It is found in the nucleus of cells."
+      ]
+    },
+    {
+      "answer": "The Sun",
+      "clues": [
+        "It is the star at the center of the Solar System.",
+        "It is a nearly perfect sphere of hot plasma.",
+        "It accounts for about 99.86% of the total mass of the Solar System.",
+        "Its energy is produced by nuclear fusion.",
+        "Light from it takes about 8 minutes to reach Earth."
+      ]
+    }
+  ]
+}
+
